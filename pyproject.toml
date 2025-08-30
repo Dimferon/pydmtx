@@ -1,0 +1,17 @@
+[build-system]
+requires = ["sip >=6, <7"]
+build-backend = "sipbuild.api"
+
+[tool.sip.project]
+name = "pydmtx"
+
+[tool.sip.metadata]
+name = "pydmtx"
+version = "0.1"
+
+[tool.sip.bindings.pydmtx]
+headers = ["dmtxcreator/src/dmtxcreator.h"]
+sources = ["dmtxcreator/src/dmtxcreator.cpp"]
+libraries = ["dmtxcreator", "dmtx"]
+include-dirs = ["dmtxcreator/src"]
+library-dirs = ["bin/libdmtxcreator"]
