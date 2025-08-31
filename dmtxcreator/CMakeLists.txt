@@ -12,11 +12,11 @@ set(DEFAULT_STATIC_LIBS OFF)
 set(DMTX_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/libdmtx")
 
 set(DMTX_LIB_DIR ${CMAKE_BINARY_DIR}/../libdmtx)
-set(DMTX_LIB_PATTERN "${DMTX_LIB_DIR}/*dmtx.*")
+set(DMTX_LIB_PATTERN "${DMTX_LIB_DIR}/*dmtx*.*")
 
 file(GLOB DMTX_LIBS ${DMTX_LIB_PATTERN})
 
-message(STATUS "copy libs and header")
+message(STATUS "Copy libs and header")
 file(COPY ${DMTX_INCLUDE_DIRS}/dmtx.h DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 file(COPY ${DMTX_LIBS} DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
@@ -41,6 +41,7 @@ if(DMTX_CREATOR_SHARED)
         )
         target_link_libraries(${PNAME} PUBLIC m)
     endif()
+    target_link_libraries(${PNAME} PRIVATE dmtx m)
     set_target_properties(${PNAME} PROPERTIES
         PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/src/dmtxcreator.cpp"
         OUTPUT_NAME "dmtxcreator"
@@ -64,6 +65,7 @@ if(DMTX_CREATOR_STATIC)
     else()
         target_link_libraries(${PNAME} PUBLIC m)
     endif()
+    target_link_libraries(${PNAME} PRIVATE dmtx m)
     set_target_properties(${PNAME} PROPERTIES
         PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/src/dmtxcreator.h"
         OUTPUT_NAME "dmtxcreator"
