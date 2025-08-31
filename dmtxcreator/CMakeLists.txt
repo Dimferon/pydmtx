@@ -14,6 +14,8 @@ set(DMTX_INCLUDE_DIRS "${CMAKE_CURRENT_SOURCE_DIR}/../3rdparty/libdmtx")
 set(DMTX_LIB_DIR ${CMAKE_BINARY_DIR}/../libdmtx)
 set(DMTX_LIB_PATTERN "${DMTX_LIB_DIR}/*dmtx*.*")
 
+link_directories(${DMTX_LIB_DIR})
+
 file(GLOB DMTX_LIBS ${DMTX_LIB_PATTERN})
 
 message(STATUS "Copy libs and header")
