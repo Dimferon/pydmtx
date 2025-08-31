@@ -10,8 +10,8 @@ name = "pydmtx"
 version = "0.1"
 
 [tool.sip.bindings.pydmtx]
-headers = ["dmtxcreator/src/dmtxcreator.h"]
-sources = ["dmtxcreator/src/dmtxcreator.cpp"]
-libraries = ["dmtxcreator", "dmtx"]
-include-dirs = ["dmtxcreator/src"]
-library-dirs = ["bin/libdmtxcreator"]
+headers = ["dmtxwrapper/src/dmtxencoderwrapper.h"]
+sources = ["dmtxwrapper/src/dmtxencoderwrapper.cpp"]
+libraries = ["dmtxwrapper", "dmtx"]
+include-dirs = ["dmtxwrapper/src"]
+library-dirs = ["bin/libdmtxwrapper"]

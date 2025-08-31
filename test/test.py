@@ -1,21 +1,24 @@
 import ctypes
-ctypes.CDLL("/home/ubuntu/pydmtx/bin/libdmtxcreator/libdmtx.so");
+import os
+path = os.path.realpath("bin/libdmtxwrapper/libdmtx.so");
+ctypes.CDLL(path);
 
 import pydmtx;
 
-test = pydmtx.DmtxCreator();
+test = pydmtx.DmtxEncoderWrapper();
 
 test.setText("test12345");
 testText = test.getText();
 print(testText);
 
 import pydmtx_creator
+print("--------------")
+test = pydmtx_creator.PyDmtxCreator("+tesggadsgaagsd+dgsagdsaaggasgdt", [100,100], replaceSymbolByFnc="+");
+test.SaveImage(name="test_fnc1.BMP", path="./test/tmp");
 
-test = pydmtx_creator.PyDmtxCreator("tesggadsgaagsddgsagdsaaggasgdt", [100,100]);
-test.SaveImage(name="test.BMP");
-
-test = pydmtx_creator.PyDmtxCreator("testgaasdgasdgasdgasdgasdgasgadg1", [100,100]);
-test.SaveImage(name="test1.BMP");
-
+print("--------------")
+test = pydmtx_creator.PyDmtxCreator("-tesggadsgaagsd-dgsagdsaag-gasgdt", [100,100], replaceSymbolByFnc="-");
+test.SaveImage(name="test_fnc1_2.BMP", path="./test/tmp");
+print("--------------")
 test = pydmtx_creator.PyDmtxCreator("testasdgasdgasdgasgasgdasgasgdasgd2", [100,100]);
-test.SaveImage(name="test2.BMP");
+test.SaveImage(name="test2.BMP", path="./test/tmp");

@@ -1,4 +1,5 @@
 .venv
 build
 bin
+tmp
 __pycache__

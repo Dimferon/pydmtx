@@ -2,18 +2,20 @@ import colorsys;
 import os;
 from PIL import Image, ImageDraw;
 import ctypes
-ctypes.CDLL("/home/ubuntu/pydmtx/bin/libdmtxcreator/libdmtx.so");
+path = os.path.realpath("bin/libdmtxwrapper/libdmtx.so.0");
+ctypes.CDLL(path);
 
 import pydmtx;
 
 class PyDmtxCreator():
     """docstring for DmCreator."""
 
-    def __init__(self, rawString:str, sizeImage:tuple[int,int]| None, foregroundColor: str | tuple[float,...] | None = "black", backgroundColor: str | tuple[float,...] | None = "white"):
+    def __init__(self, rawString:str, sizeImage:tuple[int,int]| None, replaceSymbolByFnc:str="", foregroundColor: str | tuple[float,...] | None = "black", backgroundColor: str | tuple[float,...] | None = "white"):
         self.backgroundColor=backgroundColor;
         self.foregroundColor=foregroundColor;
 
-        self.dmtxCreator=pydmtx.DmtxCreator();#TODO: в sip
+        self.encoderWrapper=pydmtx.DmtxEncoderWrapper();#TODO: в sip
+        self.encoderWrapper.replaceSymbolByFnc1(replaceSymbolByFnc);
         
         self.rawString = rawString;
         self.sizeImage=sizeImage;
@@ -23,7 +25,7 @@ class PyDmtxCreator():
     #     super.__del__();
     
     def toImage(self, sizeImage=None)->Image:
-        dmtx = self.dmtxCreator;
+        dmtx = self.encoderWrapper;
         width = dmtx.getWidth();
         height = dmtx.getHeight();
     
@@ -37,19 +39,22 @@ class PyDmtxCreator():
 
     def SaveImage(self, name, path="./", format:str="BMP"):
         normPath = os.path.normpath(path);
-        assert os.path.isdir(normPath), "Error! Not find save dirs!";
+        if not os.path.isdir(normPath):
+            fullPath = os.path.realpath(normPath);
+            os.makedirs(fullPath);
+            assert os.path.isdir(fullPath), "Error! Not find save dirs!";
         if not str.__contains__(name, format):
             name = f"{name}.{format}";
         imageFileName = f"{normPath}/{name}";
         self.encodeImage = self.toImage();
-        text = self.dmtxCreator.getText();
+        text = self.encoderWrapper.getText();
         print(text);
         if self._renderEncode():
             self.encodeImage.save(imageFileName, format=format);
         else: print("Не получилось создать DataMatrix");
     
     def _encodingString(self)->bool:
-        dmtx = self.dmtxCreator;
+        dmtx = self.encoderWrapper;
         dmtx.setText(self.rawString);
         return dmtx.encoding();
 
@@ -62,7 +67,7 @@ class PyDmtxCreator():
         #TODO: DmtxImage
         draw = ImageDraw.Draw(self.encodeImage);
 
-        dmtx = self.dmtxCreator;
+        dmtx = self.encoderWrapper;
         if dmtx is None:
             return False;
         width = dmtx.getWidth();

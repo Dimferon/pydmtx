@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.5)
-project(dmtxcreator VERSION 0.0.1 LANGUAGES CXX)
+project(dmtxwrapper VERSION 0.0.1 LANGUAGES CXX)
 
 set(CMAKE_INCLUDE_CURRENT_DIR ON)
 set(CMAKE_CXX_STANDARD 14)
@@ -30,9 +30,12 @@ if(DEFINED BUILD_SHARED_LIBS AND NOT BUILD_SHARED_LIBS STREQUAL "")
 endif()
 option(DMTX_CREATOR_SHARED "Build DMTX as shared library" "${DEFAULT_SHARED_LIBS}")
 
+file(GLOB WRAPER_SOURCE "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp")
+file(GLOB WRAPER_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/src/*.h")
+
 if(DMTX_CREATOR_SHARED)
     set(PNAME ${PROJECT_NAME}_shared)
-    add_library(${PNAME} SHARED "src/dmtxcreator.cpp")
+    add_library(${PNAME} SHARED ${WRAPER_SOURCE})
     target_include_directories(${PNAME} PRIVATE ${DMTX_INCLUDE_DIRS})
     if (MSVC)
         set_target_properties(${PNAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -45,8 +48,8 @@ if(DMTX_CREATOR_SHARED)
     endif()
     target_link_libraries(${PNAME} PRIVATE dmtx m)
     set_target_properties(${PNAME} PROPERTIES
-        PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/src/dmtxcreator.cpp"
-        OUTPUT_NAME "dmtxcreator"
+        PUBLIC_HEADER ${WRAPER_HEADER}
+        OUTPUT_NAME "dmtxwrapper"
     )
     
     install(TARGETS ${PNAME} LIBRARY ARCHIVE RUNTIME PUBLIC_HEADER)
@@ -59,8 +62,8 @@ endif()
 option(DMTX_CREATOR_STATIC "Build DMTX as static library" "${DEFAULT_STATIC_LIBS}")
 if(DMTX_CREATOR_STATIC)
     set(PNAME ${PROJECT_NAME}_static)
-    add_library(${PNAME} STATIC "src/dmtxcreator.cpp")
-    target_include_directories(dmtxcreator PRIVATE ${DMTX_INCLUDE_DIRS})
+    add_library(${PNAME} SHARED ${WRAPER_SOURCE})
+    target_include_directories(dmtxdecoderwrapper PRIVATE ${DMTX_INCLUDE_DIRS})
 
     if (MSVC)
         set_target_properties(${PNAME} PROPERTIES WINDOWS_EXPORT_ALL_SYMBOLS ON)
@@ -69,8 +72,8 @@ if(DMTX_CREATOR_STATIC)
     endif()
     target_link_libraries(${PNAME} PRIVATE dmtx m)
     set_target_properties(${PNAME} PROPERTIES
-        PUBLIC_HEADER "${CMAKE_CURRENT_SOURCE_DIR}/src/dmtxcreator.h"
-        OUTPUT_NAME "dmtxcreator"
+        PUBLIC_HEADER ${WRAPER_HEADER}
+        OUTPUT_NAME "dmtxwrapper"
     )
     
     install(TARGETS ${PNAME} LIBRARY ARCHIVE RUNTIME PUBLIC_HEADER)

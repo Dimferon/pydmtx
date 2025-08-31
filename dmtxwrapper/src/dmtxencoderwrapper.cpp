@@ -1,43 +1,50 @@
-#include "dmtxcreator.h"
+#include "dmtxencoderwrapper.h"
 #include <assert.h>
 #include <locale.h>
 #include <iostream>
 
-DmtxCreator::DmtxCreator(/* args */)
+DmtxEncoderWrapper::DmtxEncoderWrapper()
 {
 }
 
-DmtxCreator::~DmtxCreator()
+DmtxEncoderWrapper::~DmtxEncoderWrapper()
 {
     dmtxEncodeDestroy(&m_enc);
 }
 
-bool DmtxCreator::isCreateImage()
+bool DmtxEncoderWrapper::isCreateImage()
 {
     return _isCreateImage;
 }
 
-void DmtxCreator::setText(string text)
+void DmtxEncoderWrapper::setText(string text)
 {
     this->m_text = text;
     std::cout << this->m_text << std::endl;
     std::cout << this->m_text.size()<< std::endl;
 }
 
-string DmtxCreator::getText()
+string DmtxEncoderWrapper::getText()
 {
     return this->m_text;
 }
 
-bool DmtxCreator::encoding()
+bool DmtxEncoderWrapper::encoding()
 {
     if (m_enc)
     {
         dmtxEncodeDestroy(&m_enc);
     }
     m_enc = dmtxEncodeCreate();
+
     assert(m_enc != NULL);
+
     dmtxEncodeSetProp(m_enc, DmtxPropBytesPerPixel, 1);
+
+    if (_symbolByFnc1.length()>0)
+    {        
+        dmtxEncodeSetProp(m_enc, DmtxPropFnc1, _symbolByFnc1[0]);
+    }
 
     dmtxEncodeDataMatrix(m_enc, m_text.length(), (unsigned char *)m_text.c_str());
 
@@ -51,7 +58,7 @@ bool DmtxCreator::encoding()
     return true;
 }
 
-bool DmtxCreator::getPixelImage(int x, int y)
+bool DmtxEncoderWrapper::getPixelImage(int x, int y)
 {
     assert(x < _code_width && y < _code_height);
     int ind = y * _rowSizeBytes + x * _bytesPerPixel;
@@ -59,7 +66,17 @@ bool DmtxCreator::getPixelImage(int x, int y)
     return b;
 }
 
-int DmtxCreator::getWidth()
+string DmtxEncoderWrapper::symbolByFnc1()
+{
+    return _symbolByFnc1;
+}
+
+void DmtxEncoderWrapper::replaceSymbolByFnc1(string symbol)
+{
+    _symbolByFnc1 = symbol;
+}
+
+int DmtxEncoderWrapper::getWidth()
 {
     int widthImage = -1;
     if (m_enc)
@@ -69,7 +86,7 @@ int DmtxCreator::getWidth()
     return widthImage;
 }
 
-int DmtxCreator::getHeight()
+int DmtxEncoderWrapper::getHeight()
 {
     int heightImage = -1;
     if (m_enc)

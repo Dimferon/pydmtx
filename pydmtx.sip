@@ -1,13 +1,13 @@
 %Module(name=pydmtx, language="C++")
 %DefaultEncoding "UTF-8"
 
-class DmtxCreator {
+class DmtxEncoderWrapper {
     %TypeHeaderCode
-    #include <dmtxcreator.h>
+    #include <dmtxencoderwrapper.h>
     %End
 
     public:
-        DmtxCreator();
+        DmtxEncoderWrapper();
 
         void setText(std::string text);
         std::string getText();
@@ -19,6 +19,9 @@ class DmtxCreator {
 
         int getWidth();
         int getHeight();
+
+        std::string symbolByFnc1();
+        void replaceSymbolByFnc1(std::string symbole);
 };
 
 
