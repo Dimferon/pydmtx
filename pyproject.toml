@@ -2,29 +2,10 @@
 requires = ["sip >=6, <7"]
 build-backend = "sipbuild.api"
 
-[tool.sip.project]
-classifiers = [
-    "Programming Language :: Python :: 3",
-    "Operating System :: OS Independent",
-]
-
 [tool.sip.metadata]
-name = "pydmtx"
+name = "PyDmtx"
 version = "0.0.1"
 author="Dmitriy Strahov"
 author-email="dimka_strahov@mail.ru"
-requires-python = ">=3.9"
 description-file = "README"
-license-files = ["LICEN[CS]E*"]
-
-
-[tool.sip.bindings.pydmtx]
-headers = ["dmtxwrapper/src/dmtxencoderwrapper.h"]
-sources = ["dmtxwrapper/src/dmtxencoderwrapper.cpp"]
-libraries = ["dmtxwrapper", "dmtx"]
-include-dirs = ["dmtxwrapper/src"]
-library-dirs = ["bin/libdmtxwrapper"]
-
-[project.urls]
-Homepage = "https://github.com/Dimferon/pydmtx"
-Issues = "https://github.com/Dimferon/pydmtx/issues"
+home-page = "https://github.com/Dimferon/pydmtx"

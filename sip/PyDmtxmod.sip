@@ -1,30 +1,6 @@
 %Module(name=pydmtx, language="C++")
 %DefaultEncoding "UTF-8"
 
-class DmtxEncoderWrapper {
-    %TypeHeaderCode
-    #include <dmtxencoderwrapper.h>
-    %End
-
-    public:
-        DmtxEncoderWrapper();
-
-        void setText(std::string text);
-        std::string getText();
-
-        bool encoding();
-
-        bool isCreateImage();
-        bool getPixelImage(int x, int y);
-
-        int getWidth();
-        int getHeight();
-
-        std::string symbolByFnc1();
-        void replaceSymbolByFnc1(std::string symbole);
-};
-
-
 %MappedType std::string
 {
 %TypeHeaderCode
@@ -50,3 +26,7 @@ class DmtxEncoderWrapper {
     return 0;
 %End
 };
+
+//%Include DmtxEncoderWraper.sip
+//%Include DmtxDecoderWraper.sip
+
